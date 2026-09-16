@@ -1,3 +1,13 @@
 {
-    "Subjects": []
+    "Subjects": [
+        {
+            "name": "Mathematics"
+        },
+        {
+            "name": "Physics"
+        },
+        {
+            "name": "Computer Science"
+        }
+    ]
 }
