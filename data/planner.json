@@ -1,13 +1,48 @@
 {
-    "Subjects": [
+    "subjects": [
         {
-            "name": "Mathematics"
+            "name": "Computer Science",
+            "exam_date": null,
+            "topics": []
         },
         {
-            "name": "Physics"
+            "name": "Physics",
+            "exam_date": null,
+            "topics": []
         },
         {
-            "name": "Computer Science"
+            "name": "Mathematics",
+            "exam_date": null,
+            "topics": [
+                {
+                    "name": "Integration",
+                    "difficulty": 3,
+                    "importance": 3,
+                    "estimated_hours": 1,
+                    "completed": false
+                },
+                {
+                    "name": "Differentiation",
+                    "difficulty": 3,
+                    "importance": 3,
+                    "estimated_hours": 1,
+                    "completed": false
+                },
+                {
+                    "name": "Circular Measure",
+                    "difficulty": 3,
+                    "importance": 3,
+                    "estimated_hours": 1,
+                    "completed": false
+                },
+                {
+                    "name": "Trigonometry",
+                    "difficulty": 3,
+                    "importance": 3,
+                    "estimated_hours": 1,
+                    "completed": false
+                }
+            ]
         }
     ]
 }
