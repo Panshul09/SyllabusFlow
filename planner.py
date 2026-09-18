@@ -1,4 +1,4 @@
-def add_subject(data, name):
+def add_subject(data, name, exam_date=None):
     name = name.strip()
 
     if not name:
@@ -10,12 +10,12 @@ def add_subject(data, name):
 
     data["subjects"].append({
         "name": name,
-        "exam_date": None,
+        "exam_date": exam_date,
         "topics": []
     })
 
 
-def add_topic(data, subject_name, topic_name):
+def add_topic(data, subject_name, topic_name, difficulty, importance, estimated_hours):
     topic_name = topic_name.strip()
 
     if not topic_name:
@@ -23,13 +23,19 @@ def add_topic(data, subject_name, topic_name):
 
     for subject in data["subjects"]:
         if subject["name"] == subject_name:
+
+            for topic in subject["topics"]:
+                if topic["name"].casefold() == topic_name.casefold():
+                    raise ValueError("Topic already exists.")
+
             subject["topics"].append({
                 "name": topic_name,
-                "difficulty": 3,
-                "importance": 3,
-                "estimated_hours": 1,
+                "difficulty": difficulty,
+                "importance": importance,
+                "estimated_hours": estimated_hours,
                 "completed": False
             })
+
             return
 
     raise ValueError("Subject not found.")
