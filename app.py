@@ -3,12 +3,42 @@ from datetime import date
 
 from data_manager import load_data, save_data
 from planner import add_subject, add_topic
-
+from scheduler import generate_schedule
 
 st.title("A-Level Study Planner")
 
 data = load_data()
+st.header("Today's Study Schedule")
 
+available_hours = st.number_input(
+    "How many hours can you study today?",
+    min_value=0.5,
+    max_value=24.0,
+    value=4.0,
+    step=0.5
+)
+
+if st.button("Generate Today's Schedule"):
+
+    schedule = generate_schedule(
+        data,
+        available_hours
+    )
+
+    if not schedule:
+        st.info("No incomplete topics available.")
+
+    else:
+        for item in schedule:
+
+            st.write(
+                f"**{item['subject']} — {item['topic']}**"
+            )
+
+            st.write(
+                f"Study time: {item['hours']} hours  |  "
+                f"Priority: {item['priority']:.2f}"
+            )
 
 st.header("Add Subject")
 
@@ -57,14 +87,14 @@ for subject in data["subjects"]:
             max_value=5,
             value=3
         )
-
+        
         importance = st.slider(
             "Importance",
             min_value=1,
             max_value=5,
             value=3
         )
-
+        
         estimated_hours = st.number_input(
             "Estimated study hours",
             min_value=0.5,
