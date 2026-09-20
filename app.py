@@ -2,12 +2,40 @@ import streamlit as st
 from datetime import date
 
 from data_manager import load_data, save_data
-from planner import add_subject, add_topic
+from planner import (
+    add_subject,
+    add_topic,
+    set_topic_completed,
+    calculate_progress
+)
 from scheduler import generate_schedule
 
 st.title("A-Level Study Planner")
 
 data = load_data()
+total_topics = 0
+completed_topics = 0
+
+for subject in data["subjects"]:
+
+    for topic in subject["topics"]:
+
+        total_topics += 1
+
+        if topic["completed"]:
+            completed_topics += 1
+
+if total_topics > 0:
+    overall_progress = completed_topics / total_topics
+else:
+    overall_progress = 0
+
+st.header("Overall Progress")
+
+st.progress(
+    overall_progress,
+    text=f"{overall_progress * 100:.0f}% complete"
+)
 st.header("Today's Study Schedule")
 
 available_hours = st.number_input(
@@ -73,7 +101,11 @@ st.header("My Subjects")
 for subject in data["subjects"]:
 
     st.subheader(subject["name"])
-
+    progress = calculate_progress(subject)
+    st.progress(
+        progress,
+        text=f"Progress: {progress * 100:.0f}%"
+    )
     if subject["exam_date"]:
         st.write(f"Exam: {subject['exam_date']}")
 
@@ -127,9 +159,21 @@ for subject in data["subjects"]:
 
     for topic in subject["topics"]:
 
-        st.write(
-            f"• {topic['name']} — "
-            f"Difficulty {topic['difficulty']}/5 — "
-            f"Importance {topic['importance']}/5 — "
-            f"{topic['estimated_hours']}h"
+        completed = st.checkbox(
+            topic["name"],
+            value=topic["completed"],
+            key=f"complete_{subject['name']}_{topic['name']}"
         )
+
+        if completed != topic["completed"]:
+
+            set_topic_completed(
+                data,
+                subject["name"],
+                topic["name"],
+                completed
+           )
+
+            save_data(data)
+
+            st.rerun()

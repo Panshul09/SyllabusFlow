@@ -39,3 +39,35 @@ def add_topic(data, subject_name, topic_name, difficulty, importance, estimated_
             return
 
     raise ValueError("Subject not found.")
+def set_topic_completed(data, subject_name, topic_name, completed):
+    """
+    Change the completion status of a topic.
+    """
+
+    for subject in data["subjects"]:
+
+        if subject["name"] == subject_name:
+
+            for topic in subject["topics"]:
+
+                if topic["name"] == topic_name:
+                    topic["completed"] = completed
+                    return
+
+    raise ValueError("Topic not found.")
+def calculate_progress(subject):
+    """
+    Return the percentage of completed topics in a subject.
+    """
+
+    topics = subject["topics"]
+
+    if not topics:
+        return 0
+
+    completed_topics = sum(
+        topic["completed"]
+        for topic in topics
+    )
+
+    return completed_topics / len(topics)
