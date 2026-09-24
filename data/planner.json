@@ -9,7 +9,7 @@
                     "difficulty": 4,
                     "importance": 4,
                     "estimated_hours": 1.5,
-                    "completed": true
+                    "completed": false
                 }
             ]
         },
@@ -41,7 +41,7 @@
                     "difficulty": 3,
                     "importance": 3,
                     "estimated_hours": 1,
-                    "completed": true
+                    "completed": false
                 },
                 {
                     "name": "Trigonometry",
@@ -61,9 +61,19 @@
                     "difficulty": 5,
                     "importance": 4,
                     "estimated_hours": 2.5,
-                    "completed": true
+                    "completed": false
                 }
             ]
+        },
+        {
+            "name": "Further Maths",
+            "exam_date": "2026-10-21",
+            "topics": []
+        },
+        {
+            "name": "Economics",
+            "exam_date": "2026-09-30",
+            "topics": []
         }
     ]
 }
