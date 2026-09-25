@@ -5,7 +5,7 @@ st.set_page_config(
     layout="wide"
 )
 from datetime import date
-
+import pandas as pd
 from data_manager import load_data, save_data
 from planner import (
     add_subject,
@@ -61,7 +61,8 @@ page = st.sidebar.radio(
     [
         "Dashboard",
         "Subjects",
-        "Schedule"
+        "Schedule",
+        "Analytics"
     ]
 )
 total_topics = 0
@@ -354,4 +355,117 @@ if page == "Subjects":
                     save_data(data)
 
                     st.rerun()
-    
+if page == "Analytics": 
+    st.title("Analytics")
+
+    st.caption(
+        "A breakdown of your current study progress."
+    )
+
+    analytics_data = []
+
+    for subject in data["subjects"]:
+
+        total_topics = len(subject["topics"])
+
+        completed_topics = sum(
+            topic["completed"]
+            for topic in subject["topics"]
+        )
+
+        remaining_topics = (
+            total_topics - completed_topics
+        )
+
+        remaining_hours = sum(
+            topic["estimated_hours"]
+            for topic in subject["topics"]
+            if not topic["completed"]
+        )
+
+        progress = calculate_progress(subject)
+
+        analytics_data.append({
+            "Subject": subject["name"],
+            "Progress": progress * 100,
+            "Completed": completed_topics,
+            "Remaining": remaining_topics,
+            "Study Hours Remaining": remaining_hours
+        })
+    if not analytics_data:
+        st.info(
+            "Add some subjects and topics to see analytics."
+        )
+    else:
+        total_topics = sum(
+            item["Completed"] + item["Remaining"]
+            for item in analytics_data
+        )
+
+        completed_topics = sum(
+            item["Completed"]
+            for item in analytics_data
+        )
+
+        remaining_topics = sum(
+            item["Remaining"]
+            for item in analytics_data
+        )
+
+        total_remaining_hours = sum(
+            item["Study Hours Remaining"]
+            for item in analytics_data
+        )
+
+        overall_progress = (
+            completed_topics / total_topics
+            if total_topics > 0
+            else 0
+        )
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric(
+                "Overall Progress",
+                f"{overall_progress * 100:.0f}%"
+            )
+
+        with col2:
+            st.metric(
+                "Completed",
+                completed_topics
+            )
+
+        with col3:
+            st.metric(
+                "Remaining",
+                remaining_topics
+            )
+
+        with col4:
+            st.metric(
+                "Hours Remaining",
+                f"{total_remaining_hours:.1f}h"
+            )
+        df = pd.DataFrame(analytics_data)
+        st.subheader("Subject Progress")
+        progress_chart = df[
+            ["Subject", "Progress"]
+        ].set_index("Subject")
+
+        st.bar_chart(
+            progress_chart
+        )
+        st.subheader("Study Hours Remaining")
+        hours_chart = df[
+            ["Subject", "Study Hours Remaining"]
+        ].set_index("Subject")
+
+        st.bar_chart(
+            hours_chart
+        )
+        st.subheader("Subject Breakdown")
+        st.dataframe(
+            df,
+            use_container_width=True,
+            hide_index=True
+        )
