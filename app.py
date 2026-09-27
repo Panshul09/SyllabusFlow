@@ -211,9 +211,19 @@ if page == "Schedule":
                             f"### {item['topic']}"
                         )
 
+                        if item["days_left"] is None:
+
+                            exam_text = "No exam date"
+
+                        else:
+
+                            exam_text = f"{item['days_left']} days until exam"
+
+
                         st.caption(
                             f"{item['subject']} • "
-                            f"Priority score: {item['priority']:.2f}"
+                            f"Priority: {item['priority']:.2f} • "
+                            f"{exam_text}"
                         )
 
                     with col2:

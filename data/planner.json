@@ -41,7 +41,7 @@
                     "difficulty": 3,
                     "importance": 3,
                     "estimated_hours": 1,
-                    "completed": false
+                    "completed": true
                 },
                 {
                     "name": "Trigonometry",
