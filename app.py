@@ -14,6 +14,7 @@ from planner import (
     calculate_progress
 )
 from scheduler import generate_schedule
+from ai_helper import get_ai_study_advice
 st.markdown(
     """
     <style>
@@ -62,7 +63,8 @@ page = st.sidebar.radio(
         "Dashboard",
         "Subjects",
         "Schedule",
-        "Analytics"
+        "Analytics",
+        "AI Coach"
     ]
 )
 total_topics = 0
@@ -479,3 +481,39 @@ if page == "Analytics":
             use_container_width=True,
             hide_index=True
         )
+if page == "AI Coach":
+
+    st.title("AI Study Coach")
+
+    st.caption(
+        "Get study advice based on your current planner data."
+    )
+
+    if not data["subjects"]:
+
+        st.info(
+            "Add some subjects and topics before using the AI Coach."
+        )
+
+    else:
+
+        if st.button(
+            "Get Study Advice",
+            use_container_width=True
+        ):
+
+            with st.spinner("Analyzing your planner..."):
+
+                try:
+
+                    advice = get_ai_study_advice(
+                        data
+                    )
+
+                    st.markdown(advice)
+
+                except Exception as error:
+
+                    st.error(
+                        f"AI request failed: {error}"
+                    )
