@@ -1,7 +1,12 @@
 import os
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import (
+    OpenAI,
+    RateLimitError,
+    AuthenticationError,
+    APIConnectionError
+)
 
 
 load_dotenv()
@@ -59,13 +64,44 @@ Planner data:
 {planner_summary}
 """
 
-    response = client.responses.create(
-        model="gpt-5.6-luna",
-        instructions=(
-            "Give clear, concise, practical study advice "
-            "for an A-Level student."
-        ),
-        input=prompt
-    )
+    try:
 
-    return response.output_text
+        response = client.responses.create(
+            model="...",
+            instructions=(
+                "Give clear, concise, practical study advice "
+                "for an A-Level student."
+            ),
+            input=prompt
+        )
+
+        return response.output_text
+
+    except RateLimitError:
+
+        return (
+            "The AI service is currently unavailable "
+            "because the API account has reached its usage "
+            "or credit limit."
+        )
+
+    except AuthenticationError:
+
+        return (
+            "The AI API key is invalid or unavailable. "
+            "Check your API key configuration."
+        )
+
+    except APIConnectionError:
+
+        return (
+            "Could not connect to the AI service. "
+            "Check your internet connection and try again."
+        )
+
+    except Exception:
+
+        return (
+            "Something went wrong while requesting AI advice. "
+            "Please try again later."
+        )
