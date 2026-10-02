@@ -2,78 +2,154 @@
     "subjects": [
         {
             "name": "Computer Science",
-            "exam_date": null,
-            "topics": [
+            "papers": [
                 {
-                    "name": "ADTs",
-                    "difficulty": 4,
-                    "importance": 4,
-                    "estimated_hours": 1.5,
-                    "completed": false
+                    "name": "General",
+                    "code": "",
+                    "exam_date": null,
+                    "topics": [
+                        {
+                            "name": "ADTs",
+                            "difficulty": 4,
+                            "importance": 4,
+                            "estimated_hours": 1.5,
+                            "completed": true
+                        }
+                    ]
                 }
             ]
         },
         {
             "name": "Physics",
-            "exam_date": null,
-            "topics": []
+            "papers": [
+                {
+                    "name": "General",
+                    "code": "",
+                    "exam_date": null,
+                    "topics": []
+                },
+                {
+                    "name": "Paper 1",
+                    "code": "",
+                    "exam_date": null,
+                    "topics": []
+                }
+            ]
         },
         {
             "name": "Mathematics",
-            "exam_date": null,
-            "topics": [
+            "papers": [
                 {
-                    "name": "Integration",
-                    "difficulty": 3,
-                    "importance": 3,
-                    "estimated_hours": 1,
-                    "completed": true
-                },
-                {
-                    "name": "Differentiation",
-                    "difficulty": 3,
-                    "importance": 3,
-                    "estimated_hours": 1,
-                    "completed": true
-                },
-                {
-                    "name": "Circular Measure",
-                    "difficulty": 3,
-                    "importance": 3,
-                    "estimated_hours": 1,
-                    "completed": true
-                },
-                {
-                    "name": "Trigonometry",
-                    "difficulty": 3,
-                    "importance": 3,
-                    "estimated_hours": 1,
-                    "completed": false
+                    "name": "General",
+                    "code": "",
+                    "exam_date": null,
+                    "topics": [
+                        {
+                            "name": "Integration",
+                            "difficulty": 3,
+                            "importance": 3,
+                            "estimated_hours": 1,
+                            "completed": true
+                        },
+                        {
+                            "name": "Differentiation",
+                            "difficulty": 3,
+                            "importance": 3,
+                            "estimated_hours": 1,
+                            "completed": true
+                        },
+                        {
+                            "name": "Circular Measure",
+                            "difficulty": 3,
+                            "importance": 3,
+                            "estimated_hours": 1,
+                            "completed": true
+                        },
+                        {
+                            "name": "Trigonometry",
+                            "difficulty": 3,
+                            "importance": 3,
+                            "estimated_hours": 1,
+                            "completed": false
+                        },
+                        {
+                            "name": "sequences",
+                            "difficulty": 4,
+                            "importance": 2,
+                            "estimated_hours": 2.5,
+                            "completed": false
+                        }
+                    ]
                 }
             ]
         },
         {
             "name": "Chemistry",
-            "exam_date": "2026-12-09",
-            "topics": [
+            "papers": [
                 {
-                    "name": "Electric chemistry",
-                    "difficulty": 5,
-                    "importance": 4,
-                    "estimated_hours": 2.5,
-                    "completed": false
+                    "name": "General",
+                    "code": "",
+                    "exam_date": "2026-12-09",
+                    "topics": [
+                        {
+                            "name": "Electric chemistry",
+                            "difficulty": 5,
+                            "importance": 4,
+                            "estimated_hours": 2.5,
+                            "completed": false
+                        }
+                    ]
+                },
+                {
+                    "name": "Paper 1",
+                    "code": "",
+                    "exam_date": "2026-10-02",
+                    "topics": []
                 }
             ]
         },
         {
             "name": "Further Maths",
-            "exam_date": "2026-10-21",
-            "topics": []
+            "papers": [
+                {
+                    "name": "General",
+                    "code": "",
+                    "exam_date": "2026-10-21",
+                    "topics": []
+                },
+                {
+                    "name": "paper 1",
+                    "code": "12",
+                    "exam_date": "2026-10-02",
+                    "topics": []
+                }
+            ]
         },
         {
             "name": "Economics",
-            "exam_date": "2026-09-30",
-            "topics": []
+            "papers": [
+                {
+                    "name": "General",
+                    "code": "",
+                    "exam_date": "2026-09-30",
+                    "topics": []
+                }
+            ]
+        },
+        {
+            "name": "Accounting",
+            "papers": [
+                {
+                    "name": "paper 1",
+                    "code": "12",
+                    "exam_date": "2026-10-02",
+                    "topics": []
+                }
+            ]
+        },
+        {
+            "name": "XYZ",
+            "papers": []
         }
     ]
 }

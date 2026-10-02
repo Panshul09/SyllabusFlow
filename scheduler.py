@@ -2,9 +2,6 @@ from datetime import date
 
 
 def get_days_until_exam(exam_date, today=None):
-    """
-    Return the number of days until the exam.
-    """
 
     if today is None:
         today = date.today()
@@ -18,11 +15,11 @@ def get_days_until_exam(exam_date, today=None):
 
 
 def calculate_urgency(exam_date, today=None):
-    """
-    Convert exam distance into a continuous urgency score from 1-5.
-    """
 
-    days_left = get_days_until_exam(exam_date, today)
+    days_left = get_days_until_exam(
+        exam_date,
+        today
+    )
 
     if days_left is None:
         return 1
@@ -36,16 +33,12 @@ def calculate_urgency(exam_date, today=None):
 
 
 def calculate_workload_pressure(
-    subject,
+    paper,
     today=None
 ):
-    """
-    Calculate how much unfinished work a subject has
-    relative to the time remaining before its exam.
-    """
 
     days_left = get_days_until_exam(
-        subject["exam_date"],
+        paper["exam_date"],
         today
     )
 
@@ -54,7 +47,7 @@ def calculate_workload_pressure(
 
     remaining_hours = sum(
         topic["estimated_hours"]
-        for topic in subject["topics"]
+        for topic in paper["topics"]
         if not topic["completed"]
     )
 
@@ -72,21 +65,17 @@ def calculate_workload_pressure(
 
 def calculate_priority(
     topic,
-    subject,
+    paper,
     today=None
 ):
-    """
-    Calculate the priority of a topic.
-    Higher score = higher priority.
-    """
 
     urgency = calculate_urgency(
-        subject["exam_date"],
+        paper["exam_date"],
         today
     )
 
     workload_pressure = calculate_workload_pressure(
-        subject,
+        paper,
         today
     )
 
@@ -105,10 +94,6 @@ def generate_schedule(
     available_hours,
     today=None
 ):
-    """
-    Generate a schedule using incomplete topics
-    with the highest priority.
-    """
 
     if today is None:
         today = date.today()
@@ -117,27 +102,36 @@ def generate_schedule(
 
     for subject in data["subjects"]:
 
-        for topic in subject["topics"]:
-
-            if topic["completed"]:
-                continue
-
-            priority = calculate_priority(
-                topic,
-                subject,
-                today
-            )
-
-            topics.append({
-                "subject": subject["name"],
-                "topic": topic["name"],
-                "hours": topic["estimated_hours"],
-                "priority": priority,
-                "days_left": get_days_until_exam(
-                    subject["exam_date"],
+            for paper in subject["papers"]:
+                days_left = get_days_until_exam(
+                    paper["exam_date"],
                     today
                 )
-            })
+
+                if days_left is not None and days_left < 0:
+                    continue
+            for topic in paper["topics"]:
+
+                if topic["completed"]:
+                    continue
+
+                priority = calculate_priority(
+                    topic,
+                    paper,
+                    today
+                )
+
+                topics.append({
+                    "subject": subject["name"],
+                    "paper": paper["name"],
+                    "topic": topic["name"],
+                    "hours": topic["estimated_hours"],
+                    "priority": priority,
+                    "days_left": get_days_until_exam(
+                        paper["exam_date"],
+                        today
+                    )
+                })
 
     topics.sort(
         key=lambda topic: topic["priority"],
@@ -160,6 +154,7 @@ def generate_schedule(
 
         schedule.append({
             "subject": topic["subject"],
+            "paper": topic["paper"],
             "topic": topic["topic"],
             "hours": study_hours,
             "priority": topic["priority"],
