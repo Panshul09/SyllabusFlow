@@ -1,110 +1,56 @@
 {
     "subjects": [
         {
-            "name": "Computer Science",
-            "papers": [
-                {
-                    "name": "General",
-                    "code": "",
-                    "exam_date": null,
-                    "topics": [
-                        {
-                            "name": "ADTs",
-                            "difficulty": 4,
-                            "importance": 4,
-                            "estimated_hours": 1.5,
-                            "completed": true
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Physics",
-            "papers": [
-                {
-                    "name": "General",
-                    "code": "",
-                    "exam_date": null,
-                    "topics": []
-                },
-                {
-                    "name": "Paper 1",
-                    "code": "",
-                    "exam_date": null,
-                    "topics": []
-                }
-            ]
-        },
-        {
             "name": "Mathematics",
             "papers": [
                 {
-                    "name": "General",
-                    "code": "",
-                    "exam_date": null,
+                    "name": "Paper 1",
+                    "code": "12",
+                    "exam_date": "2026-11-10",
                     "topics": [
-                        {
-                            "name": "Integration",
-                            "difficulty": 3,
-                            "importance": 3,
-                            "estimated_hours": 1,
-                            "completed": true
-                        },
                         {
                             "name": "Differentiation",
-                            "difficulty": 3,
-                            "importance": 3,
-                            "estimated_hours": 1,
-                            "completed": true
-                        },
-                        {
-                            "name": "Circular Measure",
-                            "difficulty": 3,
-                            "importance": 3,
-                            "estimated_hours": 1,
-                            "completed": true
-                        },
-                        {
-                            "name": "Trigonometry",
-                            "difficulty": 3,
-                            "importance": 3,
-                            "estimated_hours": 1,
-                            "completed": false
-                        },
-                        {
-                            "name": "sequences",
                             "difficulty": 4,
-                            "importance": 2,
-                            "estimated_hours": 2.5,
-                            "completed": false
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Chemistry",
-            "papers": [
-                {
-                    "name": "General",
-                    "code": "",
-                    "exam_date": "2026-12-09",
-                    "topics": [
-                        {
-                            "name": "Electric chemistry",
-                            "difficulty": 5,
                             "importance": 4,
                             "estimated_hours": 2.5,
+                            "completed": false
+                        },
+                        {
+                            "name": "Integration",
+                            "difficulty": 4,
+                            "importance": 4,
+                            "estimated_hours": 1.5,
+                            "completed": false
+                        },
+                        {
+                            "name": "CM",
+                            "difficulty": 4,
+                            "importance": 4,
+                            "estimated_hours": 1.5,
+                            "completed": false
+                        },
+                        {
+                            "name": "Sequences",
+                            "difficulty": 3,
+                            "importance": 3,
+                            "estimated_hours": 1.0,
                             "completed": false
                         }
                     ]
                 },
                 {
-                    "name": "Paper 1",
+                    "name": "Stats 1",
                     "code": "",
-                    "exam_date": "2026-10-02",
-                    "topics": []
+                    "exam_date": "2026-11-12",
+                    "topics": [
+                        {
+                            "name": "distributions",
+                            "difficulty": 5,
+                            "importance": 4,
+                            "estimated_hours": 2.0,
+                            "completed": false
+                        }
+                    ]
                 }
             ]
         },
@@ -126,30 +72,42 @@
             ]
         },
         {
-            "name": "Economics",
-            "papers": [
-                {
-                    "name": "General",
-                    "code": "",
-                    "exam_date": "2026-09-30",
-                    "topics": []
-                }
-            ]
-        },
-        {
-            "name": "Accounting",
+            "name": "Physics",
             "papers": [
                 {
                     "name": "paper 1",
                     "code": "12",
-                    "exam_date": "2026-10-02",
-                    "topics": []
+                    "exam_date": "2026-10-21",
+                    "topics": [
+                        {
+                            "name": "kinematics",
+                            "difficulty": 5,
+                            "importance": 3,
+                            "estimated_hours": 2.0,
+                            "completed": false
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name": "XYZ",
-            "papers": []
+            "name": "Computer Science",
+            "papers": [
+                {
+                    "name": "paper 1",
+                    "code": "12",
+                    "exam_date": "2026-11-11",
+                    "topics": [
+                        {
+                            "name": "Ai",
+                            "difficulty": 4,
+                            "importance": 4,
+                            "estimated_hours": 1.5,
+                            "completed": false
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
