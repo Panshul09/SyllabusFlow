@@ -84,7 +84,7 @@
                             "difficulty": 5,
                             "importance": 3,
                             "estimated_hours": 2.0,
-                            "completed": false
+                            "completed": true
                         }
                     ]
                 }
