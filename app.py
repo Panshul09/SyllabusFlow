@@ -25,6 +25,7 @@ from planner import (
 
 from scheduler import generate_schedule
 from ai_helper import get_ai_study_advice
+from supabase_client import render_login_screen, sign_out_user
 
 
 # =========================================================
@@ -641,10 +642,23 @@ hr {
 
 
 # =========================================================
-# LOAD DATA
+# AUTHENTICATION + LOAD CLOUD DATA
 # =========================================================
 
-data = load_data()
+if not render_login_screen():
+    st.stop()
+
+try:
+    data = load_data()
+except Exception as error:
+    st.error("SyllabusFlow couldn't load your cloud planner.")
+    st.info(
+        "Check the Supabase grants, RLS policies, Data API access, "
+        "and the replace_my_planner SQL function."
+    )
+    with st.expander("Technical details"):
+        st.code(str(error))
+    st.stop()
 
 
 # =========================================================
@@ -820,6 +834,16 @@ else:
         "Plan. Prioritize. Progress."
     )
 
+
+st.sidebar.caption(
+    f"Signed in · {st.session_state.get('sf_email', '')}"
+)
+
+if st.sidebar.button("Sign out", key="sf_sign_out", width="stretch"):
+    sign_out_user()
+    st.rerun()
+
+st.sidebar.divider()
 
 page_label = st.sidebar.radio(
     "Navigation",
@@ -1021,120 +1045,159 @@ if page == "Dashboard":
 
     with main_column:
 
+        
         # -----------------------------------------------
         # UPCOMING PAPERS
         # -----------------------------------------------
 
-        st.subheader(
-            "Upcoming Papers"
-        )
-
+        st.subheader("Upcoming Papers")
 
         upcoming_papers = []
 
-
+        # Collect all papers scheduled for today or later.
         for subject in data["subjects"]:
-
             for paper in subject["papers"]:
 
                 status, days_left = get_exam_status(
                     paper["exam_date"]
                 )
 
-                if days_left is None:
+                # Ignore papers without dates or in the past.
+                if days_left is None or days_left < 0:
                     continue
 
-                if days_left < 0:
-                    continue
+                upcoming_papers.append({
+                    "subject": subject["name"],
+                    "paper": paper["name"],
+                    "code": paper["code"],
+                    "date": paper["exam_date"],
+                    "days": days_left,
+                })
 
-                upcoming_papers.append(
-                    {
-                        "subject": subject["name"],
-                        "paper": paper["name"],
-                        "code": paper["code"],
-                        "date": paper["exam_date"],
-                        "days": days_left,
-                    }
-                )
-
-
+        # Show the soonest exams first.
         upcoming_papers.sort(
             key=lambda item: item["date"]
         )
 
-
         if not upcoming_papers:
-
-            st.info(
-                "No upcoming papers."
-            )
+            st.info("No upcoming papers.")
 
         else:
-
-            exam_columns = st.columns(
-                min(
-                    len(upcoming_papers[:4]),
-                    4
-                )
-            )
-
+            # Display up to four exam tiles in one row.
+            visible_papers = upcoming_papers[:4]
+            exam_columns = st.columns(len(visible_papers))
 
             for column, paper in zip(
                 exam_columns,
-                upcoming_papers[:4]
+                visible_papers
             ):
-
                 with column:
 
-                    if paper["days"] == 0:
+                    days = paper["days"]
 
-                        badge_class = (
-                            "sf-badge sf-badge-today"
-                        )
-
-                        badge_text = "Exam today"
-
+                    # Set the central countdown and its label.
+                    if days == 0:
                         value_text = "TODAY"
+                        countdown_label = "Exam day"
+                        countdown_color = "#E76D35"
 
                     else:
-
-                        badge_class = "sf-badge"
-
-                        badge_text = (
-                            f"{paper['days']} days left"
+                        value_text = str(days)
+                        countdown_label = (
+                            "day left" if days == 1
+                            else "days left"
                         )
+                        countdown_color = "#6D5EF6"
 
-                        value_text = (
-                            f"{paper['days']}"
-                        )
+                    # Format the date for easier reading.
+                    exam_date_display = (
+                        date.fromisoformat(
+                            paper["date"]
+                        ).strftime("%d %b %Y")
+                    )
 
-
+                    # Draw the complete exam tile.
                     st.html(
                         f"""
-<div class="sf-card">
-    <div class="sf-card-muted">
-        {safe(paper['subject'])}
+<div class="sf-card"
+     style="
+        min-height: 245px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 18px;
+     ">
+
+    <div class="sf-card-muted"
+         style="
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+         ">
+        {safe(paper["subject"])}
     </div>
 
-    <div class="sf-card-title">
-        {safe(paper['paper'])}
+    <div class="sf-card-title"
+         style="margin-top: 5px;">
+        {safe(paper["paper"])}
     </div>
 
-    <div class="sf-card-value">
-        {value_text}
+    <div style="
+        flex: 1;
+        min-height: 125px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 12px 0;
+    ">
+
+        <div style="
+            font-size: 3.1rem;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            color: {countdown_color};
+        ">
+            {safe(value_text)}
+        </div>
+
+        <div style="
+            margin-top: 8px;
+            font-size: 0.82rem;
+            font-weight: 650;
+            color: #7B8398;
+        ">
+            {safe(countdown_label)}
+        </div>
+
     </div>
 
-    <div class="sf-card-muted">
-        {safe(paper['date'])}
+    <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        border-top: 1px solid #EEF0F5;
+        padding-top: 12px;
+    ">
+        <span class="sf-card-muted">
+            Exam date
+        </span>
+
+        <span style="
+            color: #18213A;
+            font-size: 0.82rem;
+            font-weight: 650;
+        ">
+            {safe(exam_date_display)}
+        </span>
     </div>
 
-    <div class="{badge_class}">
-        {safe(badge_text)}
-    </div>
 </div>
 """
                     )
-
 
         st.write("")
 
